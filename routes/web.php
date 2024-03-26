@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\MeteoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/index', [MeteoController::class, 'index'])->name('Meteo.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
