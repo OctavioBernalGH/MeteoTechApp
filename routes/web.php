@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/index', [MeteoController::class, 'index'])->name('Meteo.index');
+Route::post('/municipalityWeather', [MeteoController::class, 'municipalityWeather'])->name('Meteo.municipalityWeather');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

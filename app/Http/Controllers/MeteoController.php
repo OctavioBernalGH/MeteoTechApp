@@ -6,6 +6,8 @@ use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\json;
+
 class MeteoController extends Controller
 {
     /** 
@@ -21,15 +23,14 @@ class MeteoController extends Controller
 
             $response = $client->request('GET', 'https://opendata.aemet.es/opendata/api/maestro/municipios', [
                 'headers' => [
-                    'api_key' => 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvYmVybmFsLndvcmtAcHJvdG9ubWFpbC5jb20iLCJqdGkiOiI3OTJmYTk0Ni1mZmRhLTRlZTgtYTM1Zi02NzBiOTc1YmNkNTAiLCJpc3MiOiJBRU1FVCIsImlhdCI6MTcxMTM5NzE0MiwidXNlcklkIjoiNzkyZmE5NDYtZmZkYS00ZWU4LWEzNWYtNjcwYjk3NWJjZDUwIiwicm9sZSI6IiJ9.I9DEdaveHKfAGAQtz1wOYmh6G5sljY0sVP1A_ACjyXg',
+                    'api_key' => env('METEO_API_TOKKEN'),
                     'accept' => 'application/json'
                 ]
             ]);
 
             $statusCode = $response->getStatusCode();
-            $body = mb_convert_encoding($response->getBody()->getContents(), 'UTF-8', 'UTF-8');
-
-            $data = (json_decode($body, true));
+            $body = utf8_encode($response->getBody()->getContents());
+            $data = (json_decode($body, true, 512, JSON_UNESCAPED_UNICODE));
             $municipalities = [];
 
             foreach($data as $current){
@@ -45,6 +46,37 @@ class MeteoController extends Controller
             
         }
 
-        return view('', compact($municipalities));
+        return view('index', compact('municipalities'));
+    }
+
+    /**
+     * - An instance of the GuzzleHttp Client class is created to consume an API. 
+     * - We make a POST request by sending the bearer token in the request header, we get the municipality weather data and the response code of the request.
+     */
+
+    public function municipalityWeather(Request $request){
+
+        $client = new Client();
+
+        try{
+
+            $response = $client->request('GET', '/api/prediccion/especifica/municipio/diaria/'.$request['municipality'], [
+                'headers' => [
+                    'api_key' => env('METEO_API_TOKKEN'),
+                    'accept' => 'application/json'
+                ]
+            ]);
+
+            $statusCode = $response->getStatusCode();
+            $body = utf8_encode($response->getBody());
+            $data = (json_decode($body, true, 512, JSON_UNESCAPED_UNICODE));
+            
+            return response()->json(["result" => true, "municipality_name" => $data]);
+
+        } catch(Exception $e){
+            
+        }
+
+
     }
 }
