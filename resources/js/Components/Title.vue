@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <div>
-        <h1 style="font-size: 7rem;">{{ value }}</h1>
+    <div style="background: linear-gradient(to bottom, lightblue , lightyellow); background-clip: text;">
+        <h1 style="font-size: 7rem; color: transparent;">{{ value }}</h1>
     </div>
 </template>

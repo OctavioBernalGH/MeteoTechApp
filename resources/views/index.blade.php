@@ -16,6 +16,20 @@
 </head>
 
 <style>
+    * {
+        font-family: 'Urbanist';
+    }
+
+    .appContainer{
+        background: #2f4f4f3b;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 2rem;
+        padding: 10rem;
+        border-radius: 20px;
+    }
 
     .jconfirm-title-c {
         text-align: center;
@@ -31,6 +45,10 @@
     .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons {
         text-align: center;
         float: none;
+    }
+
+    .jconfirm-content {
+        background-color: #ccc;
     }
 
     .dataContainer {
@@ -63,19 +81,25 @@
 </style>
 
 <body id="app" class="bg-gradient-to-r from-slate-300 to-slate-500">
-    <div
-        style="height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; row-gap: 2rem;">
-        <application-title class="animate__animated animate__fadeIn"></application-title>
-        <h2 style="font-family: 'Urbanist'; font-weight: 600;" class="animate__animated animate__fadeIn">Seleccione
-            municipio</h2>
-        <div class="animate__animated animate__fadeIn">
-            <select id="select2" name="state">
-                @foreach ($municipalities as $current)
-                    <option value="{{ $current['municipality_code'] }}">{{ $current['municipality_name'] }}</option>
-                @endforeach
-            </select>
+
+    <div style="height: 80vh; display: flex; justify-content: center; align-items: center; flex-direction: column; row-gap: 2rem;">
+        <div class="appContainer">
+            <application-title class="animate__animated animate__fadeIn"></application-title>
+            <h2 style="font-weight: bold; font-size: larger;" class="animate__animated animate__fadeIn">Seleccione municipio</h2>
+            <div class="animate__animated animate__fadeIn">
+                <select id="select2" name="state">
+                    @foreach ($municipalities as $current)
+                        <option value="{{ $current['municipality_code'] }}">{{ $current['municipality_name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
+
+    <footer class="flex justify-center align-center">
+        <footer-image class="animate__animated animate__fadeIn"></footer-image>
+    </footer>
+
 </body>
 
 <footer>
